@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Консольная игра</title>
+    <style>
+        body {
+            background: #000;
+            color: #0f0;
+            font-family: monospace;
+            padding: 20px;
+        }
+        #console {
+            border: 2px solid #0f0;
+            padding: 15px;
+            min-height: 300px;
+            white-space: pre-wrap;
+            overflow-y: auto;
+        }
+        #input {
+            background: transparent;
+            border: none;
+            color: #0f0;
+            font-family: inherit;
+            font-size: 16px;
+            outline: none;
+            width: 100%;
+        }
+        .prompt {
+            color: #0ff;
+        }
+    </style>
+</head>
+<body>
+    <pre id="console"></pre>
+    <span class="prompt">></span> <input type="text" id="input" autofocus>
+
+    <script>
+        const consoleEl = document.getElementById('console');
+        const inputEl = document.getElementById('input');
+        
+        let gameState = 'start';
+        
+        function log(message) {
+            consoleEl.textContent += `\n> ${message}`;
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        function handleInput(event) {
+            if (event.key === 'Enter') {
+                const userInput = inputEl.value.trim();
+                inputEl.value = '';
+                processCommand(userInput);
+            }
+        }
+
+        function processCommand(command) {
+            switch (gameState) {
+                case 'start':
+                    if (command === '1') {
+                        gameState = 'next';
+                        log("Вы начали программировать, вы изучаете C++, вы стали очень умными, но перед вами есть выбор: продолжать создавать мини приложения на C++ (напишите: C++), или создавать сайты? (напишите: сайты)");
+                    } else {
+                        log("Игра закончилась. Напишите 1, чтобы начать заново.");
+                        return; 
+                    }
+                    break;
+                case 'next':
+                    if (command.toLowerCase() === "c++") {
+                        log("Ты продолжил изучать C++, напиши 'учиться' чтобы продолжить");
+                        gameState = 'lesson';
+                    } else if (command.toLowerCase() === "сайты") {
+                        log("Ты начал создавать сайты, первый твой сайт это сайт про капибар. Ты его показал многим, и им понравилось, ты начал его развивать, ты молодец, ты теперь чуть-чуть популярный.");
+                        log("Выбери: создать сайт про корги (корги) или создать сильный сайт сложная игра (игра)");
+                        gameState = 'site';
+                    } else {
+                        log("Вы видимо неправильно написали, напишите пожалуйста ещё раз, но правильно");
+                    }
+                    break;
+                case 'lesson':
+                    if (command.toLowerCase() === 'учиться') {
+                        log("Твоё приложение набрало много хороших комментариев, ты молодец!");
+                        log("Выбери: продолжать делать приложения спокойно и отдыхать много (напиши: приложения), или начать делать приложения на Java совмещая с C++ (напиши: java)");
+                        gameState = 'java';
+                    } else {
+                        log("Напиши 'учиться'");
+                    }
+                    break;
+                case 'java':
+                    if (command.toLowerCase() === 'приложения') {
+                        log("Вы продолжили клипать такие же приложения, вы не развиваетесь в айти, и просто вам стало неинтересно этим заниматься");
+                        log("=== Game Over ===");
+                    } else if (command.toLowerCase() === 'java') {
+                        log("Хорошо, ты решил изучать Java. Вы выложили своё первое приложение в Гугл плэй, и вы встретились с плохим мнением, что вы сделаете? Закончите (закончить) или будете продолжать делать приложения (продолжать) ?");   
+                        gameState = "plox";             
+                    }
+                    break;
+                    
+                case 'plox':
+                    if (command.toLowerCase() === 'закончить') {
+                        log("Вы закончили изучать программирование");
+                        log("=== End ===");
+                    }
+                    else if (command.toLowerCase() === 'продолжать') {
+                        log("Вы начали стали популярным в городе, вас позвали на один проект, вы стали хорошим программистом, теперь у вас есть выбор: подрабатывать на фрилансе (фриланс) или остаться в проекте (проект)");
+                        gameState = "frelance";
+                    }
+                    else {
+                        log("Вы видимо неправильно написали, напишите пожалуйста ещё раз, но правильно");
+                    }
+                    break;
+                case "frelance":
+                    if (command.toLowerCase() === "фриланс") {
+                        log("У вас много денег, что вы выберите: вложить деньги в акции (акции) или просто их тратить (тратить)");
+                        gameState = "money";
+
+                    }
+                    else if (command.toLowerCase() === "проект") {
+                        log("Вы хорошо работаете");
+                        log("=== You Win! ===");
+                    }
+                    else {
+                        log("Вы видимо неправильно написали, напишите пожалуйста ещё раз, но правильно");
+                    }
+                    break;
+                case 'money':
+                    if (command.toLowerCase() === "акции") {
+                        log("Теперь у вас много денег");
+                        log("=== You Win! ===");
+
+                    }
+                    else if (command.toLowerCase() === "тратить") {
+                        log("Вы всё потратили и остались без денег");
+                        log("=== Game Over ===");
+                    }
+                    break;
+                case 'site':
+                    if (command.toLowerCase() === 'корги') {
+                        log("Ты хороший сделал хороший сайт тебя позвали на олимпиаду, в итоге ты выиграл, и тебя приглашают в одну школу за бесплатно, что вы ответите: да (да) или нет (нет)");
+                        gameState = "olimp";
+                    } else if (command.toLowerCase() === 'игра') {
+                        log("Ты выгорел и перестал программировать.");
+                        log("=== Game Over ===");
+                    }
+                    else {
+                        log("Вы видимо неправильно написали, напишите пожалуйста ещё раз, но правильно");
+                    }
+                    break;
+                case "olimp":
+                    if (command.toLowerCase() === 'да') {
+                        log("Отлично, вы поступили, теперь что делать: просто обучаться там и не обучаться дома (дом), или изучать всё таки тоже дома (изучать)");
+                        gameState = "schoollll";
+                    }
+                    
+                    else if (command.toLowerCase() === "нет") {
+                        log("Вы продолжили делать сайты и у вас всё хорошо!");
+                        log("=== You Win! ===");
+                        gameState = "win";
+                        return;
+                    }
+                    else {
+                        log("Вы видимо неправильно написали, напишите пожалуйста ещё раз, но правильно");
+                    }
+                case "schoollll":
+                    if (command.toLowerCase() === "дом") {
+                        log("Вы просто закончили делать сайты и начали просто забывать о программировании");
+                        log("=== Game Over ===");
+                        return;
+                    }
+                    else if (command.toLowerCase() === "изучать") {
+                        log("Вы сделали много хороших сайтов, вы теперь почти известны на весь город");
+                        log("=== You Win! ===");
+                        return;
+                    }
+                    else {
+                        log("Вы видимо неправильно написали, напишите пожалуйста ещё раз, но правильно");
+                    }
+                
+                default:
+                    log("Неизвестное состояние игры.");
+            }
+        }
+
+        inputEl.addEventListener('keydown', handleInput);
+        restartGame();
+
+        function restartGame() {
+            gameState = 'start';
+            consoleEl.textContent = '';
+            log("=== IT School ===");
+            log("Привет! Ты обычный школьник, ты отличник, у тебя всё хорошо, ты во 2 классе. На уроке математике к вам приходит учитель информатики и говорит про программирование, вас это заинтересовывает. Ты приходишь домой и говоришь об этом родителям, родители это одобряют и находят старый ноутбук, и ты начинаешь изучать программирование. Напиши 1, чтобы начать.");
+        }
+
+    </script>
+</body>
+</html>
